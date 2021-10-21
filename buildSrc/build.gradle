@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    // 如果使用Groovy编写插件引入
+    id 'groovy'
+}
+
+dependencies {
+    // 如果使用Groovy编写插件引入
+    implementation localGroovy()
+
+}
+
+// 配置Java版本
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
