@@ -1,0 +1,21 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'groovy'
+    id 'kotlin'
+}
+
+group = "com.slin.study.gradle.plugin"
+version = "1.0.0"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation gradleApi()
+    testImplementation gradleTestKit()
+    implementation localGroovy()
+    implementation "com.android.tools.build:gradle:4.2.2"
+}

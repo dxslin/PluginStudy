@@ -1,0 +1,5 @@
+
+
+rootProject.name = "PluginStudy"
+include ':app'
+include ':SlinGradlePlugin'
