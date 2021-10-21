@@ -1,21 +1,40 @@
 plugins {
     id 'java-library'
+    // maven发布插件，用于将插件打包发布上传到仓库
     id 'maven-publish'
     id 'groovy'
     id 'kotlin'
 }
 
+// project组，引用插件时用到
 group = "com.slin.study.gradle.plugin"
+// 版本
 version = "1.0.0"
 
+// 上传仓库配置
+uploadArchives {
+    // 配置仓库
+    repositories {
+        // 配置成本地仓库，目录为项目根目录(rootDir)/localRepository
+        maven {
+            url rootDir.path + "/localRepository"
+        }
+    }
+}
+
+// 配置Java版本号
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 dependencies {
+    // 插件相关的API
     implementation gradleApi()
+    // 测试相关的api
     testImplementation gradleTestKit()
+    // 如果使用Groovy编写的，引入相应api
     implementation localGroovy()
+    // 安卓项目结构的API，与根目录build.gradle文件中dependencies引入的安卓build插件一致。
     implementation "com.android.tools.build:gradle:4.2.2"
 }
