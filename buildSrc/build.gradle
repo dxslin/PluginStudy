@@ -2,12 +2,25 @@ plugins {
     id 'java'
     // 如果使用Groovy编写插件引入
     id 'groovy'
+    //maven插件，用于上传插件到仓库
+    id 'maven-publish'
 }
 
 dependencies {
-    // 如果使用Groovy编写插件引入
+    // 插件相关的API
+    implementation gradleApi()
+    // 测试相关的api
+    testImplementation gradleTestKit()
+    // 如果使用Groovy编写的，引入相应api
     implementation localGroovy()
+    // 安卓项目结构的API，与根目录build.gradle文件中dependencies引入的安卓build插件一致。
+    implementation "com.android.tools.build:gradle:4.2.2"
+}
 
+// 仓库设置，如果想导入第三方的library需要配置
+repositories {
+    google()
+    mavenCentral()
 }
 
 // 配置Java版本

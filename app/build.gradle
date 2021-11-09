@@ -1,7 +1,9 @@
-import com.slin.study.buildsrc.VersionPlugin
-
+//import com.slin.study.buildsrc.VersionPlugin
 apply plugin: 'com.android.application'
-apply plugin: VersionPlugin
+//apply plugin: VersionPlugin
+apply plugin: 'com.slin.study.version'
+//apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
+
 
 android {
     compileSdkVersion 31

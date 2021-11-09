@@ -12,7 +12,13 @@ public class JavaGradlePlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project target) {
-
+        target.task("helloJava", task -> {
+            task.setGroup("version");
+            task.doLast(task1 -> {
+                System.out.println("helloJava: doLast");
+            });
+            System.out.println("Java Plugin: Hello Java");
+        });
     }
 
 }

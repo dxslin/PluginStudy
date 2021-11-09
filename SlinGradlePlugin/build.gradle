@@ -1,5 +1,5 @@
 plugins {
-    id 'java-library'
+    id 'java'
     // maven发布插件，用于将插件打包发布上传到仓库
     id 'maven-publish'
     id 'groovy'
@@ -16,7 +16,7 @@ uploadArchives {
     // 配置仓库
     repositories {
         // 配置成本地仓库，目录为项目根目录(rootDir)/localRepository
-        maven {
+        ivy {
             url rootDir.path + "/localRepository"
         }
     }
