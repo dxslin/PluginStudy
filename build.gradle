@@ -3,9 +3,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        ivy {
-            url rootDir.path + "/localRepository"
-        }
+        ivy { url "${rootDir.path}/plugin_release" }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.2"
