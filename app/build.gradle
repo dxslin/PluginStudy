@@ -1,9 +1,14 @@
+import com.slin.study.buildsrc.rename.ApkRenamePlugin
+import com.slin.study.buildsrc.rename.RenamePlugin
+
 //import com.slin.study.buildsrc.VersionPlugin
 apply plugin: 'com.android.application'
 //apply plugin: VersionPlugin
 apply plugin: 'com.slin.study.version'
 //apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
 
+apply plugin: ApkRenamePlugin
+apply plugin: RenamePlugin
 
 android {
     compileSdkVersion 31
@@ -29,6 +34,9 @@ android {
         mainapp {
 
         }
+        baidu {
+
+        }
     }
 
     compileOptions {
@@ -46,4 +54,9 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
+
+renameExt {
+    rule = "${project.name}_${project.android.defaultConfig.versionCode}_\$DATE.apk"
+    outDir = layout.projectDirectory.dir("apks")
 }

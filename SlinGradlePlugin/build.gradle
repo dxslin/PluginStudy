@@ -1,3 +1,7 @@
+import com.slin.study.buildsrc.rename.RenameTask
+import com.slin.study.buildsrc.rename.IncrementalReverseTask
+
+
 plugins {
     id 'java'
     // maven发布插件，用于将插件打包发布上传到仓库
@@ -37,6 +41,8 @@ dependencies {
 }
 
 
+
+//下面为直接在build.gradle文件中创建Task示例
 abstract class GreetingToFileTask extends DefaultTask {
 
     @OutputFile
@@ -52,11 +58,11 @@ abstract class GreetingToFileTask extends DefaultTask {
 
 def greetingFile = objects.fileProperty()
 
-tasks.register('greet', GreetingToFileTask) {
+tasks.create('greet', GreetingToFileTask) {
     destination = greetingFile
 }
 
-tasks.register('sayGreeting') {
+tasks.create('sayGreeting') {
     dependsOn greet
     doLast {
         def file = greetingFile.get().asFile
@@ -65,3 +71,18 @@ tasks.register('sayGreeting') {
 }
 
 greetingFile.set(layout.buildDirectory.file('hello.txt'))
+
+tasks.register("rename", RenameTask){
+    dependsOn greet
+
+    inputApk = layout.buildDirectory.file('hello.txt')
+    rule = "new_hello.txt"
+    outDir = file("$buildDir/outputs")
+}
+
+tasks.register('incrementalReverse', IncrementalReverseTask) {
+    inputDir = file('src')
+    outputDir = file("$buildDir/outputs")
+    inputProperty = project.properties['taskInputProperty'] ?: 'original'
+    inputFile = file(".gitignore")
+}
