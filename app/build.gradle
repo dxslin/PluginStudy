@@ -1,4 +1,5 @@
 import com.slin.study.buildsrc.rename.ApkRenamePlugin
+import com.slin.study.buildsrc.incremental.IncrementalReverseTask
 import com.slin.study.buildsrc.rename.RenamePlugin
 
 //import com.slin.study.buildsrc.VersionPlugin
@@ -56,7 +57,27 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
-renameExt {
+apkRenameExt {
     rule = "${project.name}_${project.android.defaultConfig.versionCode}_\$DATE.apk"
-    outDir = layout.projectDirectory.dir("apks")
+    outDir = layout.buildDirectory.dir("apks")
+}
+
+
+def file = layout.buildDirectory.file("hello.txt")
+file.get().asFile.withWriter {
+    it.write("Hello Slin")
+}
+renameExt{
+    inputFile = file
+    rule = "\$NAME_\$DATE.\$TYPE"
+    outDir = layout.buildDirectory.dir("rename")
+}
+
+// 测试增量任务
+tasks.register("IncrementalReverse", IncrementalReverseTask){
+    it.inputFile = file
+    it.inputDir = layout.buildDirectory.dir("outputs")
+    it.outputDir = layout.buildDirectory.dir("rename")
+    it.inputProperty = ""
+    it.group = "version"
 }

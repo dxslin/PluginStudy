@@ -1,5 +1,5 @@
 import com.slin.study.buildsrc.rename.RenameTask
-import com.slin.study.buildsrc.rename.IncrementalReverseTask
+import com.slin.study.buildsrc.incremental.IncrementalReverseTask
 
 
 plugins {

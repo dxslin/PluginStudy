@@ -1,4 +1,4 @@
-package com.slin.study.buildsrc.rename
+package com.slin.study.buildsrc.incremental
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
@@ -10,6 +10,13 @@ import org.gradle.work.ChangeType
 import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 
+/**
+ * 增量任务
+ *
+ * 检查文件夹里面的文件变化，做出相应的变化
+ *
+ *
+ */
 abstract class IncrementalReverseTask extends DefaultTask {
     @Incremental
     @PathSensitive(PathSensitivity.NAME_ONLY)
