@@ -1,6 +1,9 @@
+import com.slin.study.buildsrc.dsl.ServerEnvironmentPlugin
+import com.slin.study.buildsrc.inject.DownloadPlugin
 import com.slin.study.buildsrc.rename.ApkRenamePlugin
 import com.slin.study.buildsrc.incremental.IncrementalReverseTask
 import com.slin.study.buildsrc.rename.RenamePlugin
+import com.slin.study.buildsrc.site.SitePlugin
 
 //import com.slin.study.buildsrc.VersionPlugin
 apply plugin: 'com.android.application'
@@ -10,6 +13,11 @@ apply plugin: 'com.slin.study.version'
 
 apply plugin: ApkRenamePlugin
 apply plugin: RenamePlugin
+apply plugin: ServerEnvironmentPlugin
+apply plugin: SitePlugin
+//apply plugin: DownloadPlugin
+
+
 
 android {
     compileSdkVersion 31
@@ -81,3 +89,56 @@ tasks.register("IncrementalReverse", IncrementalReverseTask){
     it.inputProperty = ""
     it.group = "version"
 }
+
+environments {
+    dev {
+        url = 'http://localhost:8080'
+    }
+
+    staging {
+        url = 'http://staging.enterprise.com'
+    }
+
+    production {
+        url = 'http://prod.enterprise.com'
+    }
+}
+
+site {
+    outputDir = layout.buildDirectory.file("mysite")
+
+    customData {
+        websiteUrl = 'https://gradle.org'
+        vcsUrl = 'https://github.com/gradle/gradle-site-plugin'
+    }
+}
+
+//downloadExt{
+//    resource {
+//        hostName  "www.baidu.com"
+//        path  "/search?s="
+//    }
+//
+//    resources{
+//        register("baidu"){
+//            hostName  "www.baidu.com"
+//            path  "/search?s="
+//        }
+//        register("google"){
+//            hostName  "www.google.com"
+//            path  "/search?s="
+//        }
+//    }
+//}
+
+//multiResourceExt{
+//    register("baidu"){
+//        hostName  "www.baidu.com"
+//        path  "/search?s="
+//    }
+//    register("google"){
+//        hostName  "www.google.com"
+//        path  "/search?s="
+//    }
+//}
+
