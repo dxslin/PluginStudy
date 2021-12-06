@@ -3,6 +3,7 @@ import com.slin.study.buildsrc.inject.DownloadPlugin
 import com.slin.study.buildsrc.rename.ApkRenamePlugin
 import com.slin.study.buildsrc.incremental.IncrementalReverseTask
 import com.slin.study.buildsrc.rename.RenamePlugin
+import com.slin.study.buildsrc.rename.RenameTask
 import com.slin.study.buildsrc.site.SitePlugin
 
 //import com.slin.study.buildsrc.VersionPlugin
@@ -16,6 +17,8 @@ apply plugin: RenamePlugin
 apply plugin: ServerEnvironmentPlugin
 apply plugin: SitePlugin
 apply plugin: DownloadPlugin
+
+apply plugin: "com.slin.study.gradle.plugin.process_templates"
 
 
 
@@ -65,30 +68,77 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
+
+def file = layout.buildDirectory.file("hello.txt")
+file.get().asFile.withWriter {
+    it.write("Hello Slin\n")
+    it.write("Hello World\n")
+    it.write("Slin World\n")
+}
+
+//下面为直接在build.gradle文件中创建Task示例
+abstract class GreetingToFileTask extends org.gradle.api.DefaultTask {
+
+    @org.gradle.api.tasks.OutputFile
+    abstract org.gradle.api.file.RegularFileProperty getDestination()
+
+    @org.gradle.api.tasks.TaskAction
+    def greet() {
+        def file = getDestination().get().asFile
+        file.parentFile.mkdirs()
+        file.write 'Hello!'
+    }
+}
+
+def greetingFile = objects.fileProperty()
+
+tasks.create('greet', GreetingToFileTask) {
+    destination = greetingFile
+}
+
+tasks.create('sayGreeting') {
+    dependsOn greet
+    doLast {
+        def greetFile = greetingFile.get().asFile
+        println "${greetFile.text} (file: ${greetFile.name})"
+    }
+}
+
+greetingFile.set(layout.buildDirectory.file('hello.txt'))
+
+
+tasks.register("renameTest", RenameTask) {
+    dependsOn "greet"
+    group "version"
+
+    inputFile = layout.buildDirectory.file('hello.txt')
+    rule = "new_hello.txt"
+    outDir = layout.buildDirectory.dir("outputs")
+}
+
+// 测试增量任务
+tasks.register("IncrementalReverse", IncrementalReverseTask) {
+    it.group = "version"
+
+    it.inputFile = file
+    it.inputDir = layout.buildDirectory.dir("outputs")
+    it.outputDir = layout.buildDirectory.dir("rename")
+    it.inputProperty = ""
+}
+
+
+// 下面演示的是DSL配置
 apkRenameExt {
     rule = "${project.name}_${project.android.defaultConfig.versionCode}_\$DATE.apk"
     outDir = layout.buildDirectory.dir("apks")
 }
 
-
-def file = layout.buildDirectory.file("hello.txt")
-file.get().asFile.withWriter {
-    it.write("Hello Slin")
-}
-renameExt{
+renameExt {
     inputFile = file
     rule = "\$NAME_\$DATE.\$TYPE"
     outDir = layout.buildDirectory.dir("rename")
 }
 
-// 测试增量任务
-tasks.register("IncrementalReverse", IncrementalReverseTask){
-    it.inputFile = file
-    it.inputDir = layout.buildDirectory.dir("outputs")
-    it.outputDir = layout.buildDirectory.dir("rename")
-    it.inputProperty = ""
-    it.group = "version"
-}
 
 environments {
     dev {
@@ -103,8 +153,8 @@ environments {
         url = 'http://prod.enterprise.com'
     }
 }
-serversExt{
-    serverEnv{
+serversExt {
+    serverEnv {
         dev {
             url = 'http://localhost:8080'
         }
@@ -124,7 +174,7 @@ site {
     }
 }
 
-downloadExt{
+downloadExt {
     hostPath {
         hostName = "www.baidu.com"
         path = "/search?s="
@@ -151,3 +201,14 @@ downloadExt{
 }
 
 
+processTemplates{
+    templateEngineType = "ReplaceTemplateEngine"
+    sourceFiles = layout.buildDirectory.files("hello.txt")
+    templateData {
+        name = "haha"
+        variables = ["Hello": "hi", "Slin":"slin"]
+    }
+    outputDir = layout.buildDirectory.dir("outputs")
+
+
+}
