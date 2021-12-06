@@ -17,20 +17,14 @@ public class DownloadPlugin implements Plugin<Project> {
     @Override
     public void apply(Project target) {
         DownloadExtension downloadExtension = target.getExtensions()
-                .create("downloadExt", DownloadExtension.class, target.getObjects());
-        ResourceUrlsExtension resourceUrlsExtension = target.getExtensions()
-                .create("download", ResourceUrlsExtension.class);
-
+                .create("downloadExt", DownloadExtension.class);
 
         target.afterEvaluate(project -> {
 
-            project.getTasks().create("printlnResources", PrintResourceTask.class, printResourceTask -> {
+            project.getTasks().create("downloadResource", PrintResourceTask.class, printResourceTask -> {
                 printResourceTask.setGroup("version");
                 printResourceTask.getHostPath().set(downloadExtension.getHostPath());
                 printResourceTask.setResources(downloadExtension.getResources());
-
-
-                resourceUrlsExtension.getResources().forEach(PrintResourceTask::printResourceUrl);
 
             });
         });

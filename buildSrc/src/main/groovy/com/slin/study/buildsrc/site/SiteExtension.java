@@ -9,7 +9,14 @@ import org.gradle.api.tasks.Nested;
  * <p>
  * date: 2021/12/3
  * <p>
- * description:
+ * description: 嵌套对象扩展
+ * <p>
+ * 嵌套对象扩展：
+ * <p>
+ * 1. 跟其他方式一样，先定义一个获取嵌套对象的getter，并添加`Nested`注解；
+ * <p>
+ * 2. 然后还需要创建一个与对象名称一样的方法，参数为Action,泛型参数为该对象类型或者其父类，然后方法将对象传入action执行即可
+ * <p>
  */
 abstract public class SiteExtension {
 

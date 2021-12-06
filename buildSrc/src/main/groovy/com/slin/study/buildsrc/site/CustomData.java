@@ -7,7 +7,7 @@ import org.gradle.api.provider.Property;
  * <p>
  * date: 2021/12/3
  * <p>
- * description:
+ * description: 嵌套对象数据
  */
 abstract public class CustomData {
 

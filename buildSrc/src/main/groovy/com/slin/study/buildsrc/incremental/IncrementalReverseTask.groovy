@@ -11,10 +11,13 @@ import org.gradle.work.Incremental
 import org.gradle.work.InputChanges
 
 /**
- * 增量任务
+ * author: slin
+ * <p>
+ * date: 2021/12/6
+ * <p>
+ * description:增量任务
  *
- * 检查文件夹里面的文件变化，做出相应的变化
- *
+ * 通过`Incremental`注解标注输入文件夹，然后gradle会检查文件夹里面的文件变化，做出相应的变化
  *
  */
 abstract class IncrementalReverseTask extends DefaultTask {

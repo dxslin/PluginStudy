@@ -15,13 +15,13 @@ import org.gradle.api.tasks.TaskAction;
  */
 public abstract class PrintResourceTask extends DefaultTask {
 
-    @Nested
-    abstract Property<HostPath> getHostPath();
-
     private NamedDomainObjectContainer<ResourceUrl> resources;
 
     @Nested
-    NamedDomainObjectContainer<ResourceUrl> getResources(){
+    abstract Property<HostPath> getHostPath();
+
+    @Nested
+    NamedDomainObjectContainer<ResourceUrl> getResources() {
         return resources;
     }
 
@@ -43,7 +43,7 @@ public abstract class PrintResourceTask extends DefaultTask {
         System.out.println(sb);
     }
 
-    public static void printResourceUrl(ResourceUrl resourceUrl){
+    public static void printResourceUrl(ResourceUrl resourceUrl) {
         String sb = "ResourceUrl{" +
                 "name:" + resourceUrl.getName() + ", " +
                 "uri:" + resourceUrl.getUri().get() + ", " +

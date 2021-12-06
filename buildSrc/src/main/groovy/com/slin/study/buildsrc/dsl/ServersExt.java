@@ -7,7 +7,8 @@ import org.gradle.api.NamedDomainObjectContainer;
  * <p>
  * date: 2021/12/6
  * <p>
- * description:
+ * description:包括对象集合的扩展对象
+ *
  */
 public interface ServersExt {
 

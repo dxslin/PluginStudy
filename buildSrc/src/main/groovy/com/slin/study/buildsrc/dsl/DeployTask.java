@@ -17,16 +17,21 @@ import org.gradle.api.tasks.TaskAction;
 public class DeployTask extends DefaultTask {
 
     @Input
-    public Property<String> url = getProject().getObjects().property(String.class);
+    public Property<String> url;
+    // 也可以先创建Property对象，然后getUrl.set(value)
+//    public Property<String> url = getProject().getObjects().property(String.class);
 
     @TaskAction
     public void deploy(){
-        System.out.println("开始部署");
-        System.out.println("deploy: url = " + url.get());
-        System.out.println("部署完成");
+        System.out.println("Deploy Start");
+        System.out.println("Deploy: url = " + url.get());
+        System.out.println("Deploy End");
     }
 
 
+    /**
+     * 注解添加在属性上面，一定要添加getter方法
+     */
     public Property<String> getUrl() {
         return url;
     }

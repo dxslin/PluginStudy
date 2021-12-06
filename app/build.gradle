@@ -128,30 +128,26 @@ downloadExt{
     hostPath {
         hostName = "www.baidu.com"
         path = "/search?s="
-//        uri = "www.baidu.com"
     }
     resources {
-        register('gradle') {
+        gradle {
             uri = uri('https://gradle.org')
         }
-        register('baidu') {
+        baidu {
             uri = uri('https://baidu.com')
             aliasName = "bd"
         }
     }
-}
-
-download {
-    // Can use a block to configure the container contents
-    resources {
-        register('gradle') {
-            uri = uri('https://gradle.org')
-        }
-        register('baidu') {
-            uri = uri('https://baidu.com')
-            aliasName = "bd"
-        }
-    }
+    // 也可以这样写
+//    resources {
+//        register('gradle') {
+//            uri = uri('https://gradle.org')
+//        }
+//        register('baidu') {
+//            uri = uri('https://baidu.com')
+//            aliasName = "bd"
+//        }
+//    }
 }
 
 
