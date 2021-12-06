@@ -1,6 +1,7 @@
 package com.slin.study.buildsrc.inject;
 
 import org.gradle.api.DefaultTask;
+import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.provider.Property;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.TaskAction;
@@ -15,17 +16,38 @@ import org.gradle.api.tasks.TaskAction;
 public abstract class PrintResourceTask extends DefaultTask {
 
     @Nested
-    abstract Property<Resource> getResource();
+    abstract Property<HostPath> getHostPath();
 
-    @TaskAction
-    public void print(){
-        printResource(getResource().get());
+    private NamedDomainObjectContainer<ResourceUrl> resources;
+
+    @Nested
+    NamedDomainObjectContainer<ResourceUrl> getResources(){
+        return resources;
     }
 
-    private static void printResource(Resource resource){
-        String sb = "Resource{" +
-                "hostName:" + resource.getHostName().get() +
-                "path: " + resource.getPath().get() +
+    public void setResources(NamedDomainObjectContainer<ResourceUrl> resources) {
+        this.resources = resources;
+    }
+
+    @TaskAction
+    public void print() {
+        printHostPath(getHostPath().get());
+        resources.forEach(PrintResourceTask::printResourceUrl);
+    }
+
+    public static void printHostPath(HostPath hostPath) {
+        String sb = "HostPath{" +
+                "hostName:" + hostPath.getHostName().get() + ", " +
+                "path: " + hostPath.getPath().get() +
+                "}";
+        System.out.println(sb);
+    }
+
+    public static void printResourceUrl(ResourceUrl resourceUrl){
+        String sb = "ResourceUrl{" +
+                "name:" + resourceUrl.getName() + ", " +
+                "uri:" + resourceUrl.getUri().get() + ", " +
+                "aliasName: " + resourceUrl.getAliasName().getOrNull() +
                 "}";
         System.out.println(sb);
     }

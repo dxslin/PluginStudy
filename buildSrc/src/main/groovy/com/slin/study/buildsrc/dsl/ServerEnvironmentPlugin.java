@@ -1,10 +1,11 @@
 package com.slin.study.buildsrc.dsl;
 
-import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.model.ObjectFactory;
+
+import java.util.function.Consumer;
 
 /**
  * author: slin
@@ -22,18 +23,28 @@ public class ServerEnvironmentPlugin implements Plugin<Project> {
                 objects.domainObjectContainer(ServerEnvironment.class, name -> objects.newInstance(ServerEnvironment.class, name));
         project.getExtensions().add("environments", serverEnvironmentContainer);
 
-        project.afterEvaluate(project1 ->
-                serverEnvironmentContainer.all(serverEnvironment -> {
-                    String env = serverEnvironment.getName();
-                    String capitalizedServerEnv = env.substring(0, 1).toUpperCase() + env.substring(1);
-                    String taskName = "deployTo" + capitalizedServerEnv;
+        ServersExt serversExt = project.getExtensions().create("serversExt", ServersExt.class);
 
-                    System.out.println("taskName = " + taskName);
+        project.afterEvaluate(project1 -> serverEnvironmentContainer.all(serverEnvironment -> {
+            String env = serverEnvironment.getName();
+            String capitalizedServerEnv = env.substring(0, 1).toUpperCase() + env.substring(1);
+            String taskName = "deployTo" + capitalizedServerEnv;
 
-                    project1.getTasks().register(taskName, DeployTask.class, task -> {
-                        task.getUrl().set(serverEnvironment.getUrl());
-                        task.setGroup("version");
-                    });
-                }));
+            System.out.println("taskName = " + taskName);
+
+            project1.getTasks().register(taskName, DeployTask.class, task -> {
+                task.getUrl().set(serverEnvironment.getUrl());
+                task.setGroup("version");
+            });
+
+            serversExt.getServerEnv().forEach(new Consumer<ServerEnvironment>() {
+                @Override
+                public void accept(ServerEnvironment serverEnvironment) {
+                    System.out.println("serversExt: name = " + serverEnvironment.getName());
+                }
+            });
+
+        })
+        );
     }
 }

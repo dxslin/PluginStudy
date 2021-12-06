@@ -10,12 +10,10 @@ import org.gradle.api.tasks.Input;
  * <p>
  * description:
  */
-public interface Resource {
+public interface HostPath {
 
-    @Input
     Property<String> getHostName();
 
-    @Input
     Property<String> getPath();
 
 }

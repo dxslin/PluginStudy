@@ -1,10 +1,7 @@
 package com.slin.study.buildsrc.inject;
 
-import org.gradle.api.Action;
-import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.Task;
 
 import java.util.function.Consumer;
 
@@ -21,20 +18,25 @@ public class DownloadPlugin implements Plugin<Project> {
     public void apply(Project target) {
         DownloadExtension downloadExtension = target.getExtensions()
                 .create("downloadExt", DownloadExtension.class, target.getObjects());
+        ResourceUrlsExtension resourceUrlsExtension = target.getExtensions()
+                .create("download", ResourceUrlsExtension.class);
 
 
         target.afterEvaluate(project -> {
 
-            project.getTasks().create("printlnResources", PrintResourceTask.class, new Action<PrintResourceTask>() {
-                @Override
-                public void execute(PrintResourceTask printResourceTask) {
-                    printResourceTask.getResource().set(downloadExtension.getDownloadResource());
-                }
+            project.getTasks().create("printlnResources", PrintResourceTask.class, printResourceTask -> {
+                printResourceTask.setGroup("version");
+                printResourceTask.getHostPath().set(downloadExtension.getHostPath());
+                printResourceTask.setResources(downloadExtension.getResources());
+
+
+                resourceUrlsExtension.getResources().forEach(PrintResourceTask::printResourceUrl);
+
             });
         });
     }
 
-//                NamedDomainObjectContainer<Resource> resources = multiResourceExtension.getResources();
+//                NamedDomainObjectContainer<HostPath> resources = multiResourceExtension.getResources();
 //                for (int i = 0; i < resources.size(); i++) {
 //                    resources.forEach(DownloadPlugin::printResource);
 //                }

@@ -3,7 +3,6 @@ package com.slin.study.buildsrc.inject;
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.model.ObjectFactory;
-import org.gradle.api.tasks.Nested;
 
 import javax.inject.Inject;
 
@@ -15,32 +14,23 @@ import javax.inject.Inject;
  * description:
  */
 public abstract class DownloadExtension {
-
     // A nested instance
-    private final Resource downloadResource;
+    private final HostPath hostPath;
 
-    private final NamedDomainObjectContainer<Resource> downloadResources;
+    public abstract NamedDomainObjectContainer<ResourceUrl> getResources();
 
     @Inject
     public DownloadExtension(ObjectFactory objectFactory) {
-        // Use an injected ObjectFactory to create a Resource object
-        downloadResource = objectFactory.newInstance(Resource.class);
-        downloadResources = objectFactory.domainObjectContainer(Resource.class);
-
-
+        // Use an injected ObjectFactory to create a HostPath object
+        hostPath = objectFactory.newInstance(HostPath.class);
     }
 
-    public void downloadResource(Action<? super Resource> action){
-        action.execute(getDownloadResource());
+
+    public void hostPath(Action<HostPath> action){
+        action.execute(hostPath);
     }
 
-    @Nested
-    public Resource getDownloadResource() {
-        return downloadResource;
-    }
-
-    @Nested
-    public NamedDomainObjectContainer<Resource> getDownloadResources() {
-        return downloadResources;
+    public HostPath getHostPath() {
+        return hostPath;
     }
 }
