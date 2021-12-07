@@ -36,7 +36,7 @@ import java.util.function.Consumer;
  * <p>
  * description:
  * <p>
- * 假设您有一个任务处理不同类型的模板，例如 FreeMarker、Velocity、Moustache 等。它获取模板源文件并将它们与一些模型数据结合以生成模板文件的填充版本。
+ * 假设您有一个任务处理不同类型的模板，它获取模板源文件并将它们与一些模型数据结合以生成模板文件的填充版本。
  * <p>
  * 此任务将具有三个输入和一个输出：
  * <p>
@@ -54,7 +54,7 @@ public abstract class ProcessTemplatesTask extends DefaultTask {
     public abstract Property<String> getTemplateEngineType();
 
     @InputFiles
-    public abstract FileCollection getSourceFiles();
+    public abstract ConfigurableFileCollection getSourceFiles();
 
     @Nested
     public abstract TemplateData getTemplateData();
@@ -72,13 +72,21 @@ public abstract class ProcessTemplatesTask extends DefaultTask {
 
     @TaskAction
     public void processTemplate() {
+        System.out.println("SourceFiles: " + getSourceFiles());
+        System.out.println("TemplateData: " + getTemplateData().getName().getOrNull() + " " + getTemplateData().getVariables().getOrNull());
+
+        System.out.println("\nProcessing...\n");
+
         getSourceFiles().forEach(file -> {
             File output = new File(getOutputDir().get().getAsFile(), file.getName());
             getTemplateEngine().process(file, output);
+            System.out.println("output: " + output);
         });
+
+        System.out.println("\nEnd\n");
     }
 
-    public abstract void setSourceFiles(FileCollection files);
+    public abstract void setSourceFiles(ConfigurableFileCollection files);
 
     public abstract void setTemplateData(TemplateData data);
 

@@ -7,9 +7,9 @@ import com.slin.study.buildsrc.rename.RenameTask
 import com.slin.study.buildsrc.site.SitePlugin
 
 //import com.slin.study.buildsrc.VersionPlugin
-apply plugin: 'com.android.application'
 //apply plugin: VersionPlugin
 apply plugin: 'com.slin.study.version'
+apply plugin: 'com.android.application'
 //apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
 
 apply plugin: ApkRenamePlugin
@@ -175,6 +175,8 @@ site {
 }
 
 downloadExt {
+    inputFiles "${buildDir.path}/hello.txt"
+
     hostPath {
         hostName = "www.baidu.com"
         path = "/search?s="
@@ -203,12 +205,11 @@ downloadExt {
 
 processTemplates{
     templateEngineType = "ReplaceTemplateEngine"
-    sourceFiles = layout.buildDirectory.files("hello.txt")
+//    sourceFiles.from(layout.buildDirectory.file("hello.txt").get().asFile.path)
+    sourceFiles layout.buildDirectory.file("hello.txt")
     templateData {
         name = "haha"
         variables = ["Hello": "hi", "Slin":"slin"]
     }
     outputDir = layout.buildDirectory.dir("outputs")
-
-
 }

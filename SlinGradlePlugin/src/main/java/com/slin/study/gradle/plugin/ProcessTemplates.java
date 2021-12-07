@@ -18,21 +18,21 @@ import org.gradle.api.tasks.OutputDirectory;
  */
 public abstract class ProcessTemplates {
 
-    @Input
     public abstract Property<String> getTemplateEngineType();
 
-    @InputFiles
     public abstract ConfigurableFileCollection getSourceFiles();
 
     @Nested
     public abstract TemplateData getTemplateData();
 
-    @OutputDirectory
     public abstract DirectoryProperty getOutputDir();
 
-    public void templateData(Action<TemplateData> action){
+    public void templateData(Action<? super TemplateData> action){
         action.execute(getTemplateData());
     }
 
+    public void sourceFiles(Object... paths){
+        getSourceFiles().from(paths);
+    }
 
 }

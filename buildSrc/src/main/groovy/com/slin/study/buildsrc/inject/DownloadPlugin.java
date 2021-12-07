@@ -26,6 +26,8 @@ public class DownloadPlugin implements Plugin<Project> {
                 printResourceTask.getHostPath().set(downloadExtension.getHostPath());
                 printResourceTask.setResources(downloadExtension.getResources());
 
+                printResourceTask.getInputFiles().from(downloadExtension.getInputFiles());
+
             });
         });
     }
