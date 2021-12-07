@@ -206,7 +206,7 @@ downloadExt {
 
 processTemplates{
     templateEngineType = "ReplaceTemplateEngine"
-//    sourceFiles.from(layout.buildDirectory.file("hello.txt").get().asFile.path)
+//    sourceFiles(layout.buildDirectory.file("hello.txt"))
     sourceFiles layout.buildDirectory.file("hello.txt")
     templateData {
         name = "Genshin"

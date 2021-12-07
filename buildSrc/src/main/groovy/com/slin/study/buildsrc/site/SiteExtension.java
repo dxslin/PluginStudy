@@ -26,6 +26,7 @@ abstract public class SiteExtension {
     abstract public CustomData getCustomData();
 
     public void customData(Action<? super CustomData> action) {
+        // 这里其实是将customData属性传递到gradle中给它的其他属性赋值，相当于kotlin中的with方法
         action.execute(getCustomData());
     }
 }

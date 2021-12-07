@@ -16,17 +16,17 @@ public class ProcessTemplatesPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
 
-        ProcessTemplates extension = project.getExtensions()
+        ProcessTemplates processTemplates = project.getExtensions()
                 .create("processTemplates", ProcessTemplates.class);
 
         project.afterEvaluate(project1 -> project1.getTasks()
                 .create("processTemplates", ProcessTemplatesTask.class, task -> {
                     task.setGroup("process");   //设置分组，方便找到任务位置
 
-                    task.getTemplateEngineType().set(extension.getTemplateEngineType());
-                    task.getOutputDir().set(extension.getOutputDir());
-                    task.setTemplateData(extension.getTemplateData());
-                    task.getSourceFiles().from(extension.getSourceFiles());
+                    task.getTemplateEngineType().set(processTemplates.getTemplateEngineType());
+                    task.getOutputDir().set(processTemplates.getOutputDir());
+                    task.setTemplateData(processTemplates.getTemplateData());
+                    task.getSourceFiles().from(processTemplates.getSourceFiles());
                 }));
     }
 
