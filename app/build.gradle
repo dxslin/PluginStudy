@@ -18,6 +18,7 @@ apply plugin: ServerEnvironmentPlugin
 apply plugin: SitePlugin
 apply plugin: DownloadPlugin
 
+apply plugin: "com.slin.study.gradle.plugin.process_templates_fixed"
 apply plugin: "com.slin.study.gradle.plugin.process_templates"
 
 
@@ -71,9 +72,9 @@ dependencies {
 
 def file = layout.buildDirectory.file("hello.txt")
 file.get().asFile.withWriter {
-    it.write("Hello Slin\n")
-    it.write("Hello World\n")
-    it.write("Slin World\n")
+    it.write("Hello Klee!\n")
+    it.write("Hello Jean!\n")
+    it.write("Hi Amber!\n")
 }
 
 //下面为直接在build.gradle文件中创建Task示例
@@ -208,8 +209,8 @@ processTemplates{
 //    sourceFiles.from(layout.buildDirectory.file("hello.txt").get().asFile.path)
     sourceFiles layout.buildDirectory.file("hello.txt")
     templateData {
-        name = "haha"
-        variables = ["Hello": "hi", "Slin":"slin"]
+        name = "Genshin"
+        variables = ["Hello": "Hi", "Klee":"可莉", "Amber":"安柏", "Jean":"琴"]
     }
     outputDir = layout.buildDirectory.dir("outputs")
 }

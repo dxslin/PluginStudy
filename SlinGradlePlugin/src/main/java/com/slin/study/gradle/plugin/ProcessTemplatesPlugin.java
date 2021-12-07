@@ -21,13 +21,12 @@ public class ProcessTemplatesPlugin implements Plugin<Project> {
 
         project.afterEvaluate(project1 -> project1.getTasks()
                 .create("processTemplates", ProcessTemplatesTask.class, task -> {
+                    task.setGroup("process");   //设置分组，方便找到任务位置
+
                     task.getTemplateEngineType().set(extension.getTemplateEngineType());
                     task.getOutputDir().set(extension.getOutputDir());
                     task.setTemplateData(extension.getTemplateData());
-                    task.setSourceFiles(extension.getSourceFiles());
-
-                    task.setGroup("process");
-
+                    task.getSourceFiles().from(extension.getSourceFiles());
                 }));
     }
 

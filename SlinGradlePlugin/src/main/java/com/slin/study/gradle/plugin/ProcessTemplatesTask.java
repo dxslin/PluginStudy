@@ -62,6 +62,7 @@ public abstract class ProcessTemplatesTask extends DefaultTask {
     @OutputDirectory
     public abstract DirectoryProperty getOutputDir();
 
+    // 仅内部使用
     @Internal
     private TemplateEngine getTemplateEngine() {
         if (ReplaceTemplateEngine.class.getSimpleName().equals(getTemplateEngineType().get())) {
@@ -85,8 +86,6 @@ public abstract class ProcessTemplatesTask extends DefaultTask {
 
         System.out.println("\nEnd\n");
     }
-
-    public abstract void setSourceFiles(ConfigurableFileCollection files);
 
     public abstract void setTemplateData(TemplateData data);
 
