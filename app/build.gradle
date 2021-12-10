@@ -1,3 +1,4 @@
+import com.slin.study.buildsrc.android.ProcessManifestActivityPlugin
 import com.slin.study.buildsrc.dsl.ServerEnvironmentPlugin
 import com.slin.study.buildsrc.inject.DownloadPlugin
 import com.slin.study.buildsrc.rename.ApkRenamePlugin
@@ -10,6 +11,7 @@ import com.slin.study.buildsrc.site.SitePlugin
 //apply plugin: VersionPlugin
 apply plugin: 'com.slin.study.version'
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 //apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
 
 apply plugin: ApkRenamePlugin
@@ -20,6 +22,8 @@ apply plugin: DownloadPlugin
 
 apply plugin: "com.slin.study.gradle.plugin.process_templates_fixed"
 apply plugin: "com.slin.study.gradle.plugin.process_templates"
+
+apply plugin: ProcessManifestActivityPlugin
 
 
 
@@ -56,6 +60,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -71,6 +78,9 @@ dependencies {
 
 
 def file = layout.buildDirectory.file("hello.txt")
+if(!buildDir.exists()){
+    buildDir.mkdirs()
+}
 file.get().asFile.withWriter {
     it.write("Hello Klee!\n")
     it.write("Hello Jean!\n")

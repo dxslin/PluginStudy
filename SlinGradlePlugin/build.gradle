@@ -1,13 +1,10 @@
-import com.slin.study.buildsrc.rename.RenameTask
-import com.slin.study.buildsrc.incremental.IncrementalReverseTask
-
 
 plugins {
     id 'java'
     // maven发布插件，用于将插件打包发布上传到仓库
     id 'maven-publish'
-    id 'groovy'
-    id 'kotlin'
+    // 使用groovy语言用到
+//    id 'groovy'
 }
 
 // project组，引用插件时用到
