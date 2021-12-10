@@ -6,6 +6,7 @@ import com.slin.study.buildsrc.incremental.IncrementalReverseTask
 import com.slin.study.buildsrc.rename.RenamePlugin
 import com.slin.study.buildsrc.rename.RenameTask
 import com.slin.study.buildsrc.site.SitePlugin
+import com.slin.study.buildsrc.transformer.AspectJPlugin
 
 //import com.slin.study.buildsrc.VersionPlugin
 //apply plugin: VersionPlugin
@@ -24,6 +25,7 @@ apply plugin: "com.slin.study.gradle.plugin.process_templates_fixed"
 apply plugin: "com.slin.study.gradle.plugin.process_templates"
 
 apply plugin: ProcessManifestActivityPlugin
+apply plugin: AspectJPlugin
 
 
 
