@@ -17,7 +17,8 @@ public class AspectJPlugin implements Plugin<Project> {
     @Override
     public void apply(Project project) {
         AppExtension appExtension = project.getExtensions().findByType(AppExtension.class);
-        appExtension.registerTransform(new JokerWanTransform(project));
+        appExtension.registerTransform(new PrintOnCreateTransform());
+
     }
 
 

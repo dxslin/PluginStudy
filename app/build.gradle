@@ -9,10 +9,12 @@ import com.slin.study.buildsrc.site.SitePlugin
 import com.slin.study.buildsrc.transformer.AspectJPlugin
 
 //import com.slin.study.buildsrc.VersionPlugin
-//apply plugin: VersionPlugin
 apply plugin: 'com.slin.study.version'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+
+
+//apply plugin: VersionPlugin
 //apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
 
 apply plugin: ApkRenamePlugin
