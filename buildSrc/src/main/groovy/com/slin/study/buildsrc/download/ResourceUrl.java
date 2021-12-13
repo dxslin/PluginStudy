@@ -1,7 +1,6 @@
-package com.slin.study.buildsrc.inject;
+package com.slin.study.buildsrc.download;
 
 import org.gradle.api.provider.Property;
-import org.gradle.api.tasks.Input;
 
 import java.net.URI;
 

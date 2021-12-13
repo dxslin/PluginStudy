@@ -1,9 +1,7 @@
-package com.slin.study.buildsrc.inject;
+package com.slin.study.buildsrc.download;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-
-import java.util.function.Consumer;
 
 /**
  * author: slin

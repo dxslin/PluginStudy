@@ -1,19 +1,9 @@
-package com.slin.study.buildsrc.inject;
-
-import com.sun.tools.javac.util.List;
+package com.slin.study.buildsrc.download;
 
 import org.gradle.api.Action;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.file.ConfigurableFileCollection;
-import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.Nested;
-
-import java.io.File;
-import java.util.ArrayList;
-
-import javax.inject.Inject;
-
-import groovy.lang.GString;
 
 /**
  * author: slin
