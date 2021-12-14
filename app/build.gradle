@@ -1,6 +1,6 @@
 import com.slin.study.buildsrc.android.ProcessManifestActivityPlugin
 import com.slin.study.buildsrc.dsl.ServerEnvironmentPlugin
-import com.slin.study.buildsrc.inject.DownloadPlugin
+import com.slin.study.buildsrc.download.DownloadPlugin
 import com.slin.study.buildsrc.rename.ApkRenamePlugin
 import com.slin.study.buildsrc.incremental.IncrementalReverseTask
 import com.slin.study.buildsrc.rename.RenamePlugin
@@ -12,10 +12,11 @@ import com.slin.study.buildsrc.transformer.AspectJPlugin
 apply plugin: 'com.slin.study.version'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'android-aspectjx'
 
 
 //apply plugin: VersionPlugin
-//apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
+apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
 
 apply plugin: ApkRenamePlugin
 apply plugin: RenamePlugin
@@ -26,7 +27,7 @@ apply plugin: DownloadPlugin
 apply plugin: "com.slin.study.gradle.plugin.process_templates_fixed"
 apply plugin: "com.slin.study.gradle.plugin.process_templates"
 
-apply plugin: ProcessManifestActivityPlugin
+//apply plugin: ProcessManifestActivityPlugin
 apply plugin: AspectJPlugin
 
 
@@ -67,6 +68,12 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures{
+        viewBinding = true
+        dataBinding = true
+    }
+
 }
 
 dependencies {
@@ -218,13 +225,13 @@ downloadExt {
 }
 
 
-processTemplates{
-    templateEngineType = "ReplaceTemplateEngine"
-//    sourceFiles(layout.buildDirectory.file("hello.txt"))
-    sourceFiles layout.buildDirectory.file("hello.txt")
-    templateData {
-        name = "Genshin"
-        variables = ["Hello": "Hi", "Klee":"可莉", "Amber":"安柏", "Jean":"琴"]
-    }
-    outputDir = layout.buildDirectory.dir("outputs")
-}
+//processTemplates{
+//    templateEngineType = "ReplaceTemplateEngine"
+////    sourceFiles(layout.buildDirectory.file("hello.txt"))
+//    sourceFiles layout.buildDirectory.file("hello.txt")
+//    templateData {
+//        name = "Genshin"
+//        variables = ["Hello": "Hi", "Klee":"可莉", "Amber":"安柏", "Jean":"琴"]
+//    }
+//    outputDir = layout.buildDirectory.dir("outputs")
+//}
