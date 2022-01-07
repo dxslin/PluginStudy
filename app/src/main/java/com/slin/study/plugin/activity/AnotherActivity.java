@@ -2,6 +2,8 @@ package com.slin.study.plugin.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -38,6 +40,16 @@ public class AnotherActivity extends AppCompatActivity {
 
         binding.tvLambda.setVisibility(View.VISIBLE);
         binding.tvLambda.setOnClickListener(view -> Log.d(TAG, "OnClick: "+view));
+
+        // 测试是否影响双击
+        GestureDetector gestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Log.d(TAG, "onDoubleTap: " + e);
+                return true;
+            }
+        });
+        binding.tvHello.setOnTouchListener((view, motionEvent) -> gestureDetector.onTouchEvent(motionEvent));
 
     }
 
