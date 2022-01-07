@@ -43,4 +43,28 @@ public class AspectUtil {
     }
 
 
+//    @After("execution(* com.slin.study.plugin..*Activity.setOnLongClickListener(..))")
+//    public void  afterLongClick(JoinPoint joinPoint) {
+//        Log.d(TAG, "afterLongClick::: " + joinPoint.getSignature());
+//    }
+
+    @Around("call(* android.view.View.setOnLongClickListener(android.view.View.OnLongClickListener))")
+    public void  executeLongClick(ProceedingJoinPoint joinPoint) throws Throwable {
+        Log.d(TAG, "executeLongClick start: ${joinPoint.signature}");
+        if(joinPoint.getArgs().length > 0) {
+            View.OnLongClickListener argListener = (View.OnLongClickListener) joinPoint.getArgs()[0];
+            View.OnLongClickListener longClickListener = new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Log.d(TAG, "executeLongClick custom listener: " + view);
+                    return argListener.onLongClick(view);
+                }
+            };
+            joinPoint.proceed(new Object[]{longClickListener});
+        } else {
+            joinPoint.proceed();
+        }
+        Log.d(TAG, "executeLongClick end: ${joinPoint.signature}");
+    }
+
 }

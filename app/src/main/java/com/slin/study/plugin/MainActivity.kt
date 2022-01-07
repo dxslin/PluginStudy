@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.OnLongClickListener
 import androidx.appcompat.app.AppCompatActivity
 import com.slin.study.plugin.activity.AnotherActivity
 import com.slin.study.plugin.databinding.ActivityMainBinding
@@ -30,6 +31,32 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, AnotherActivity::class.java))
         }
         binding.tvHello.text = "你好"
-        binding.tvLambda.visibility = View.GONE
+
+
+        binding.tvLambda.visibility = View.VISIBLE
+
+        binding.tvLambda.setOnLongClickListener(object :View.OnLongClickListener{
+            override fun onLongClick(view: View): Boolean {
+                Log.d(TAG, "onLongClick: $view")
+
+                onLongClickListener?.onLongClick(view)
+
+                return false
+            }
+
+        })
+
+        setOnLongClickListener { p0 ->
+            Log.d(TAG, "setOnLongClickListener onLongClick: $p0")
+            false
+        }
+
     }
+
+    private var onLongClickListener:OnLongClickListener? = null
+
+    fun setOnLongClickListener(l: OnLongClickListener) {
+        this.onLongClickListener = l
+    }
+
 }

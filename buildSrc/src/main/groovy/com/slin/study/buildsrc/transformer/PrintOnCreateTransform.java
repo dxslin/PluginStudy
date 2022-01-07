@@ -24,6 +24,9 @@ import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
+import java.util.zip.ZipEntry;
 
 /**
  * author: slin
@@ -51,7 +54,7 @@ public class PrintOnCreateTransform extends Transform {
 
     @Override
     public boolean isIncremental() {
-        return true;
+        return false;
     }
 
     @Override
@@ -73,17 +76,11 @@ public class PrintOnCreateTransform extends Transform {
 
     private void processJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
         try {
-            File[] files = jarInput.getFile().listFiles(new FilenameFilter() {
-                @Override
-                public boolean accept(File file, String name) {
-                    return name.contains("Activity");
-                }
-            });
-            if (files != null) {
-                for (File file : files) {
-                    String name = file.getName();
-
-                }
+            System.out.println("jar input: " + jarInput.getFile());
+            JarInputStream jarInputStream = new JarInputStream(new FileInputStream(jarInput.getFile()));
+            ZipEntry entry = null;
+            while ((entry = jarInputStream.getNextEntry()) != null){
+                System.out.println("file in jar: " + entry.getName());
             }
 
             File dest = outputProvider.getContentLocation(jarInput.getName(), jarInput.getContentTypes(), jarInput.getScopes(), Format.JAR);
@@ -101,7 +98,7 @@ public class PrintOnCreateTransform extends Transform {
             File dest = outputProvider.getContentLocation(directoryInput.getName(),
                     directoryInput.getContentTypes(), directoryInput.getScopes(), Format.DIRECTORY);
 
-            System.out.println(directoryInput.getFile().getName());
+            System.out.println("input file: " + directoryInput.getFile().getName());
             FileUtils.getAllFiles(directoryInput.getFile()).filter(input -> {
                 if (input != null) {
                     return input.getName().endsWith("Activity.class");
