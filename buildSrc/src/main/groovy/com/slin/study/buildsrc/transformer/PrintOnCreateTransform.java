@@ -77,11 +77,11 @@ public class PrintOnCreateTransform extends Transform {
     private void processJarInput(JarInput jarInput, TransformOutputProvider outputProvider) {
         try {
             System.out.println("jar input: " + jarInput.getFile());
-            JarInputStream jarInputStream = new JarInputStream(new FileInputStream(jarInput.getFile()));
-            ZipEntry entry = null;
-            while ((entry = jarInputStream.getNextEntry()) != null){
-                System.out.println("file in jar: " + entry.getName());
-            }
+//            JarInputStream jarInputStream = new JarInputStream(new FileInputStream(jarInput.getFile()));
+//            ZipEntry entry = null;
+//            while ((entry = jarInputStream.getNextEntry()) != null){
+//                System.out.println("file in jar: " + entry.getName());
+//            }
 
             File dest = outputProvider.getContentLocation(jarInput.getName(), jarInput.getContentTypes(), jarInput.getScopes(), Format.JAR);
 

@@ -12,6 +12,7 @@ import com.slin.study.buildsrc.transformer.AspectJPlugin
 apply plugin: 'com.slin.study.version'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'android-aspectjx'
 
 
@@ -85,6 +86,10 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation project(path: ':apt:annotation')
+    implementation project(path: ':apt:test')
+    kapt project(path: ':apt:processor')
 }
 
 

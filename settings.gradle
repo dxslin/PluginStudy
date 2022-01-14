@@ -3,3 +3,7 @@
 rootProject.name = "PluginStudy"
 include ':app'
 include ':SlinGradlePlugin'
+include ':apt'
+include ':apt:annotation'
+include ':apt:processor'
+include ':apt:test'
