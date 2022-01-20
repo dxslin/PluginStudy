@@ -55,14 +55,13 @@ class InitialProcessor: AbstractProcessor() {
             log("element: $element")
             when(element){
                 is TypeElement ->{
-                    initiatorCreator.addElement(element)
                     processClassSymbol(element)
                 }
                 is ExecutableElement ->{
-
+                    processExecutableElement(element)
                 }
                 is VariableElement ->{
-
+                    processVariableElement(element)
                 }
             }
 
@@ -72,9 +71,19 @@ class InitialProcessor: AbstractProcessor() {
         return true
     }
 
-    private fun processClassSymbol(classSymbol:TypeElement) {
+    private fun processClassSymbol(element:TypeElement) {
+        initiatorCreator.addElement(element.asElementModel())
+    }
 
+    private fun processExecutableElement(element: ExecutableElement){
+        log("executable element: $element")
+        initiatorCreator.addElement(element.asElementModel())
 
+    }
+
+    private fun processVariableElement(element: VariableElement){
+        log("variable element: $element")
+        initiatorCreator.addElement(element.asElementModel())
     }
 
     private fun log(msg:CharSequence){

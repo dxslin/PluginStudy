@@ -10,7 +10,7 @@ import com.slin.study.annotation.Initialize
  * @version 1.0.0
  * @since 2022/1/12
  */
-class MethodInitial  {
+object MethodInitial  {
 
     private val TAG = MethodInitial::class.java.simpleName
 

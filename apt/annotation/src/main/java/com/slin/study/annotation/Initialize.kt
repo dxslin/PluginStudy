@@ -5,12 +5,3 @@ package com.slin.study.annotation
 annotation class Initialize {
 
 }
-
-/**
- * 初始化接口
- */
-interface Initial {
-
-    fun initial()
-
-}

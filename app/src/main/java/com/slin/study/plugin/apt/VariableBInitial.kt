@@ -1,20 +1,19 @@
 package com.slin.study.plugin.apt
 
+import android.app.Application
 import android.content.Context
 import com.slin.study.annotation.Initialize
 
 /**
- * VariableInitial
+ * VariableBInitial
  *
  * @author slin
  * @version 1.0.0
- * @since 2022/1/12
+ * @since 2022/1/20
  */
-class VariableInitial {
-    private val TAG = VariableInitial::class.java.simpleName
+object VariableBInitial {
 
     @Initialize
-    var context:Context? = null
-
+    lateinit var context: Application
 
 }

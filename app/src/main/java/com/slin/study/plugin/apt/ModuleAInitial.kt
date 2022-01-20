@@ -16,10 +16,6 @@ class ModuleAInitial :Initial {
 
     private val TAG = ModuleAInitial::class.java.simpleName
 
-    @Initialize
-    private var name = ""
-
-
     override fun initial() {
         Log.d(TAG, "initial: ")
 
