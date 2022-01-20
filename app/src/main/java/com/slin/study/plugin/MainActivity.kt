@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.View.OnLongClickListener
 import androidx.appcompat.app.AppCompatActivity
-import com.slin.apt.generated.Initiator
 import com.slin.study.plugin.activity.AnotherActivity
-import com.slin.study.plugin.apt.ModuleAInitial
 import com.slin.study.plugin.databinding.ActivityMainBinding
 
 /**
@@ -34,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         }
         binding.tvHello.text = "你好"
 
-        Initiator.initial(this)
+
 
         binding.tvLambda.visibility = View.VISIBLE
 
