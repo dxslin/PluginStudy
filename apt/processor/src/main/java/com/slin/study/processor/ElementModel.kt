@@ -18,12 +18,12 @@ import javax.lang.model.util.SimpleElementVisitor8
  * @since 2022/1/18
  */
 data class ElementModel(
-    val packageName: String,
-    val className: String,
-    val methodName: String,
-    val hasContext: Boolean = false,
-    val createInstance: Boolean,
-    val isVariable:Boolean = false,
+    val packageName: String,        // 包名
+    val className: String,          // 类名
+    val methodName: String,         // 方法名
+    val hasContext: Boolean = false,    // 是否有context参数
+    val createInstance: Boolean,        // 是否需要创建实例，object class不需要创建
+    val isVariable: Boolean = false,     // 是否成员变量
 )
 
 const val CONTEXT = "android.content.Context"
@@ -32,24 +32,25 @@ const val APPLICATION = "android.app.Application"
 fun TypeElement.asElementModel(): ElementModel {
     val className = asClassName()
     var methodName = ""
-    var createInstance = false
+    var createInstance = true
     //判断是否继承了 `Initial` 接口，如果继承了就调用其 `initial` 方法
     for (itf in interfaces) {
         if ("com.slin.study.annotation.Initial" == itf.toString()) {
             methodName = "initial"
-            createInstance = true
             break
         }
     }
 
     var hasContext = false
-    if (methodName.isEmpty()) {
-        for (enclosedElement in enclosedElements) {
-            if (enclosedElement is ExecutableElement && enclosedElement.simpleName.contentEquals("<init>")) {
-                hasContext = enclosedElement.hasContext()
-                createInstance = true
-                break
-            }
+    for (enclosedElement in enclosedElements) {
+        // 构造函数名字为<init>
+        if (methodName.isEmpty() && enclosedElement is ExecutableElement &&
+            enclosedElement.simpleName.contentEquals("<init>")
+        ) {
+            hasContext = enclosedElement.hasContext()
+        } else if (enclosedElement is VariableElement &&
+            enclosedElement.simpleName.contentEquals("INSTANCE")) {
+            createInstance = false
         }
     }
 
@@ -70,6 +71,7 @@ fun ExecutableElement.asElementModel(): ElementModel {
     val className = typeElement.asClassName()
     var createInstance = true
     for (enclosedElement in typeElement.enclosedElements) {
+        // object class 包含一个INSTANCE对象
         if (enclosedElement is VariableElement && enclosedElement.simpleName.contentEquals("INSTANCE")) {
             createInstance = false
             break
@@ -90,7 +92,7 @@ fun VariableElement.asElementModel(): ElementModel {
     if (enclosingElement !is TypeElement) {
         throw IllegalArgumentException("Variable of this type are not supported")
     }
-    if(!isContext()){
+    if (!isContext()) {
         throw IllegalArgumentException("Only support '$CONTEXT' value")
     }
 
@@ -124,6 +126,6 @@ private fun ExecutableElement.hasContext(): Boolean {
     return parameters.size == 1 && parameters[0].isContext()
 }
 
-private fun VariableElement.isContext():Boolean {
+private fun VariableElement.isContext(): Boolean {
     return asType().toString() == CONTEXT || asType().toString() == APPLICATION
 }

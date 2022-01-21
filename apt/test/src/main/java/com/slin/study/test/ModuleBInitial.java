@@ -1,4 +1,4 @@
-package com.slin.study.plugin.apt;
+package com.slin.study.test;
 
 import android.util.Log;
 

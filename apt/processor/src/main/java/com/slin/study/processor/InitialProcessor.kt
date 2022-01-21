@@ -15,17 +15,13 @@ import javax.tools.Diagnostic
 class InitialProcessor: AbstractProcessor() {
 
     private lateinit var messager:Messager
-    private lateinit var elementUtils:Elements
-    private lateinit var filer:Filer
 
-
+    // 初始化代码生成器
     private lateinit var initiatorCreator:InitiatorCreator
 
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
         messager = processingEnv.messager
-        elementUtils = processingEnv.elementUtils
-        filer = processingEnv.filer
 
         initiatorCreator = InitiatorCreator(processingEnv)
     }
@@ -42,48 +38,36 @@ class InitialProcessor: AbstractProcessor() {
 
         log("InitialProcessor process: $typeElementSet $roundEnvironment")
 
-        for (typeElement in typeElementSet){
-            log("typeElement: $typeElement")
-        }
-
-        if(typeElementSet.isEmpty()){
+        // 如果前面的processor发生错误，或者获取到的注解为空，则直接返回不处理
+        if(roundEnvironment.errorRaised() || roundEnvironment.processingOver() || typeElementSet.isEmpty()){
             return false
         }
 
-        val elementSet = roundEnvironment.getElementsAnnotatedWith(Initialize::class.java)
-        for (element in elementSet){
-            log("element: $element")
-            when(element){
-                is TypeElement ->{
-                    processClassSymbol(element)
+        for (typeElement in typeElementSet){
+            log("typeElement: $typeElement")
+            if(typeElement.qualifiedName.contentEquals(Initialize::class.java.name)){
+//                val elementSet = roundEnvironment.getElementsAnnotatedWith(Initialize::class.java)
+                val elementSet = roundEnvironment.getElementsAnnotatedWith(typeElement)
+                for (element in elementSet){
+                    log("element: $element")
+                    when(element){
+                        is TypeElement ->{
+                            initiatorCreator.addElement(element.asElementModel())
+                        }
+                        is ExecutableElement ->{
+                            initiatorCreator.addElement(element.asElementModel())
+                        }
+                        is VariableElement ->{
+                            initiatorCreator.addElement(element.asElementModel())
+                        }
+                    }
                 }
-                is ExecutableElement ->{
-                    processExecutableElement(element)
-                }
-                is VariableElement ->{
-                    processVariableElement(element)
-                }
+                // 生成kotlin文件
+                initiatorCreator.generate()
+                return true
             }
-
         }
-        val fileSpec = initiatorCreator.generateCreatorFile()
-        fileSpec.writeTo(filer)
-        return true
-    }
-
-    private fun processClassSymbol(element:TypeElement) {
-        initiatorCreator.addElement(element.asElementModel())
-    }
-
-    private fun processExecutableElement(element: ExecutableElement){
-        log("executable element: $element")
-        initiatorCreator.addElement(element.asElementModel())
-
-    }
-
-    private fun processVariableElement(element: VariableElement){
-        log("variable element: $element")
-        initiatorCreator.addElement(element.asElementModel())
+        return false
     }
 
     private fun log(msg:CharSequence){

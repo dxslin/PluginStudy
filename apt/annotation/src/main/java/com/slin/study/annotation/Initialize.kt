@@ -1,6 +1,6 @@
 package com.slin.study.annotation
 
-@Retention(AnnotationRetention.BINARY)
+@Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FIELD, AnnotationTarget.FUNCTION)
 annotation class Initialize {
 

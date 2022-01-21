@@ -1,4 +1,4 @@
-package com.slin.study.plugin.apt
+package com.slin.study.test
 
 import android.content.Context
 import com.slin.study.annotation.Initialize
