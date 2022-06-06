@@ -1,6 +1,7 @@
 package com.slin.study.buildsrc.download;
 
 import org.gradle.api.provider.Property;
+import org.gradle.api.tasks.Input;
 
 /**
  * author: slin
@@ -11,8 +12,10 @@ import org.gradle.api.provider.Property;
  */
 public interface HostPath {
 
+    @Input
     Property<String> getHostName();
 
+    @Input
     Property<String> getPath();
 
 }

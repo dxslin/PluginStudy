@@ -1,6 +1,7 @@
 package com.slin.study.buildsrc.download;
 
 import org.gradle.api.provider.Property;
+import org.gradle.api.tasks.Input;
 
 import java.net.URI;
 
@@ -21,6 +22,7 @@ import javax.inject.Inject;
  */
 public abstract class ResourceUrl {
 
+    @Input
     private final String name;
 
     @Inject
@@ -32,8 +34,10 @@ public abstract class ResourceUrl {
         return name;
     }
 
+    @Input
     abstract Property<URI> getUri();
 
+    @Input
     abstract Property<String> getAliasName();
 
 }

@@ -1,3 +1,4 @@
+import com.slin.plugin.kotlin.GithubCatalogPlugin
 import com.slin.study.buildsrc.android.ProcessManifestActivityPlugin
 import com.slin.study.buildsrc.dsl.ServerEnvironmentPlugin
 import com.slin.study.buildsrc.download.DownloadPlugin
@@ -31,6 +32,8 @@ apply plugin: "com.slin.study.gradle.plugin.process_templates"
 //apply plugin: ProcessManifestActivityPlugin
 apply plugin: AspectJPlugin
 
+// kotlin plugin
+apply plugin: GithubCatalogPlugin
 
 
 android {
@@ -239,3 +242,13 @@ downloadExt {
 //    }
 //    outputDir = layout.buildDirectory.dir("outputs")
 //}
+
+
+/**
+ * 导出GitHub目录下面所有github仓库的目录名和远程地址，方便我们转移电脑数据
+ */
+githubCatalog{
+
+    githubReposDir = "G:/zhou_nian/AndroidProject/github"
+
+}

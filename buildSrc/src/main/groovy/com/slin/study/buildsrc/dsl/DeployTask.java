@@ -1,9 +1,7 @@
 package com.slin.study.buildsrc.dsl;
 
-import com.android.build.api.variant.impl.GradleProperty;
-
 import org.gradle.api.DefaultTask;
-import org.gradle.api.provider.Property;
+import org.gradle.api.provider.Provider;
 import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.TaskAction;
 
@@ -17,7 +15,7 @@ import org.gradle.api.tasks.TaskAction;
 public class DeployTask extends DefaultTask {
 
     @Input
-    public Property<String> url;
+    public Provider<String> url;
     // 也可以先创建Property对象，然后getUrl.set(value)
 //    public Property<String> url = getProject().getObjects().property(String.class);
 
@@ -32,11 +30,11 @@ public class DeployTask extends DefaultTask {
     /**
      * 注解添加在属性上面，一定要添加getter方法
      */
-    public Property<String> getUrl() {
+    public Provider<String> getUrl() {
         return url;
     }
 
-    public void setUrl(Property<String> url) {
+    public void setUrl(Provider<String> url) {
         this.url = url;
     }
 }

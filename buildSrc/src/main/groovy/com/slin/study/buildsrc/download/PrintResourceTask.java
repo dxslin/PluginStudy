@@ -4,7 +4,6 @@ import org.gradle.api.DefaultTask;
 import org.gradle.api.NamedDomainObjectContainer;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.provider.Property;
-import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.InputFiles;
 import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.TaskAction;
@@ -26,7 +25,6 @@ public abstract class PrintResourceTask extends DefaultTask {
     @Nested
     abstract Property<HostPath> getHostPath();
 
-    @Input
     @Nested
     NamedDomainObjectContainer<ResourceUrl> getResources() {
         return resources;
