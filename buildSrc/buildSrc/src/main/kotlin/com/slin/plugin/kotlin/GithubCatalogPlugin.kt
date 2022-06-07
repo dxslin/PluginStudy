@@ -9,6 +9,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.process.ExecSpec
 import java.io.BufferedOutputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 
@@ -52,19 +53,24 @@ class GithubCatalogPlugin : Plugin<Project> {
                                 .isNullOrEmpty()
                         }
                         .forEach { file ->
-                            println("GithubCatalog: ${file.path}")
+                            println(file.path)
 
-                            outputStream.write("${file.name}\n".toByteArray())
+                            val baos = ByteArrayOutputStream()
+                            baos.write("${file.name}\n".toByteArray())
+
                             // 这里不要改写为lambda表达式，否则可能编译不过去
                             @Suppress("ObjectLiteralToLambda")
                             project.exec(object : Action<ExecSpec> {
                                 override fun execute(es: ExecSpec) {
                                     es.commandLine("sh -c \"git remote -v | grep push\"".split(" "))
                                     es.workingDir = file
-                                    es.standardOutput = outputStream
+                                    es.standardOutput = baos
                                 }
                             })
 
+                            val content = baos.toByteArray()
+                            println(String(content))
+                            outputStream.write(content)
                         }
                 }
             }
