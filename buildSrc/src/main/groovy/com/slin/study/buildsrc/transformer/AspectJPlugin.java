@@ -1,6 +1,9 @@
 package com.slin.study.buildsrc.transformer;
 
-import com.android.build.gradle.AppExtension;
+import com.android.build.api.extension.impl.VariantSelectorImpl;
+import com.android.build.api.instrumentation.FramesComputationMode;
+import com.android.build.api.instrumentation.InstrumentationScope;
+import com.android.build.api.variant.ApplicationAndroidComponentsExtension;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -16,8 +19,16 @@ public class AspectJPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
-        AppExtension appExtension = project.getExtensions().findByType(AppExtension.class);
-        appExtension.registerTransform(new PrintOnCreateTransform());
+        ApplicationAndroidComponentsExtension appExtension =
+                project.getExtensions().findByType(ApplicationAndroidComponentsExtension.class);
+
+        appExtension.onVariants(new VariantSelectorImpl(), variant -> {
+            variant.getInstrumentation().transformClassesWith(
+                    PrintOnCreateTransform.class, InstrumentationScope.PROJECT, none -> null);
+            variant.getInstrumentation().setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS);
+
+
+        });
 
     }
 

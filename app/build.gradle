@@ -14,11 +14,13 @@ apply plugin: 'com.slin.study.version'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'android-aspectjx'
+//apply plugin: 'io.github.wurensen.android-aspectjx'
 
 
 //apply plugin: VersionPlugin
 apply plugin: 'com.slin.study.gradle.plugin.slin_gradle_plugin'
+apply plugin: "com.slin.study.gradle.plugin.process_templates_fixed"
+apply plugin: "com.slin.study.gradle.plugin.process_templates"
 
 apply plugin: ApkRenamePlugin
 apply plugin: RenamePlugin
@@ -26,10 +28,8 @@ apply plugin: ServerEnvironmentPlugin
 apply plugin: SitePlugin
 apply plugin: DownloadPlugin
 
-apply plugin: "com.slin.study.gradle.plugin.process_templates_fixed"
-apply plugin: "com.slin.study.gradle.plugin.process_templates"
 
-//apply plugin: ProcessManifestActivityPlugin
+apply plugin: ProcessManifestActivityPlugin
 apply plugin: AspectJPlugin
 
 // kotlin plugin
@@ -37,8 +37,8 @@ apply plugin: GithubCatalogPlugin
 
 
 android {
-    compileSdkVersion 31
-
+    compileSdk 31
+    namespace "com.slin.study.plugin"
     defaultConfig {
         applicationId "com.slin.study.plugin"
         minSdkVersion 21
@@ -66,11 +66,11 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     buildFeatures{

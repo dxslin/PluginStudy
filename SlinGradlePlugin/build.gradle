@@ -13,17 +13,26 @@ group = "com.slin.study.gradle.plugin"
 version = "1.0.0"
 
 // 上传仓库配置
-uploadArchives {
+publishing {
     repositories {
         // 配置成本地仓库
-        ivy { url "${rootDir.path}/plugin_release" }
+//        ivy { url "${rootDir.path}/plugin_release" }
+        maven { url "${rootDir.path}/plugin_release" }
+    }
+    publications {
+//        ivy(IvyPublication){
+//            from components.java
+//        }
+        maven(MavenPublication) {
+            from components.java
+        }
     }
 }
 
 // 配置Java版本号
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
@@ -34,7 +43,7 @@ dependencies {
     // 如果使用Groovy编写的，引入相应api
     implementation localGroovy()
     // 安卓项目结构的API，与根目录build.gradle文件中dependencies引入的安卓build插件一致。
-    implementation "com.android.tools.build:gradle:4.2.2"
+    implementation "com.android.tools.build:gradle:8.0.2"
 }
 
 

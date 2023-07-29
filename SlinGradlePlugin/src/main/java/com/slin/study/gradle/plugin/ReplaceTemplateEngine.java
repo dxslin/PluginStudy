@@ -1,6 +1,7 @@
 package com.slin.study.gradle.plugin;
 
-import org.apache.http.util.TextUtils;
+
+import org.gradle.internal.impldep.org.apache.http.util.TextUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
