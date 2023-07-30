@@ -1,32 +1,98 @@
-
 plugins {
     id 'java'
     // maven发布插件，用于将插件打包发布上传到仓库
     id 'maven-publish'
+    id 'signing'
     // 使用groovy语言用到
 //    id 'groovy'
 }
-
-// project组，引用插件时用到
-group = "com.slin.study.gradle.plugin"
+def isSnapshot = false
+group = "io.github.dxslin"
 // 版本
-version = "1.0.0"
+version = "1.0.0${isSnapshot ? "-SNAPSHOT" : ""}"
+
+Properties localProp = new Properties()
+localProp.load(rootProject.file("local.properties").newDataInputStream())
+localProp.entrySet().forEach {
+    println "local: ${it.key}: ${it.value}"
+    project.ext[it.key] = it.value
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+javadoc {
+    failOnError false
+
+    options {
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        author true
+        version true
+    }
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
 
 // 上传仓库配置
+// https://docs.gradle.org/current/userguide/publishing_maven.html
 publishing {
     repositories {
-        // 配置成本地仓库
-//        ivy { url "${rootDir.path}/plugin_release" }
-        maven { url "${rootDir.path}/plugin_release" }
-    }
-    publications {
-//        ivy(IvyPublication){
-//            from components.java
-//        }
-        maven(MavenPublication) {
-            from components.java
+        maven {
+            def isLocal = true
+            def maven2Url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            def localUrl = "${rootDir.path}/plugin_release"
+
+            url isLocal ? localUrl : (isSnapshot ? snapshotUrl : maven2Url)
+            if (!isLocal) {
+                credentials {
+                    username project["ossrh.username"]
+                    password project["ossrh.password"]
+                }
+            }
         }
     }
+    publications {
+        slinGradlePlugin(MavenPublication) {
+            from components.java
+            groupId  project.group //
+            artifactId project.name   //资源名称
+            version project.version     //版本名称
+            pom {
+                name = "SlinGradlePlugin"
+                description = "Gradle plugin test by slin"
+                url = "https://github.com/dxslin/PluginStudy"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "dxslin"
+                        name = "Slin Tan"
+                        email = "dxslin@qq.com"
+                    }
+                }
+                scm {
+                    url = "https://github.com/dxslin/PluginStudy/tree/master"
+                    connection = "scm:git:git://github.com/dxslin/PluginStudy.git"
+                    developerConnection = "scm:git:ssh://github.com:dxslin/PluginStudy.git"
+                }
+            }
+        }
+    }
+}
+
+signing {
+    // 使用gpg软件？默认在gradle.properties文件里面配置sign信息即可，这里我们配置在local.properties里面， 然后复制到project.ext中
+//    useGpgCmd()
+    sign publishing.publications.slinGradlePlugin
 }
 
 // 配置Java版本号

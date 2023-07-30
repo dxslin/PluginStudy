@@ -34,15 +34,29 @@ import java.io.File;
  */
 public abstract class ProcessTemplatesTask extends DefaultTask {
 
+    /**
+     *
+     * @return template engine type
+     */
     @Input
     public abstract Property<String> getTemplateEngineType();
-
+    /**
+     *
+     * @return sources files
+     */
     @InputFiles
     public abstract ConfigurableFileCollection getSourceFiles();
-
+    /**
+     *
+     * @return template data
+     */
     @Nested
     public abstract TemplateData getTemplateData();
 
+    /**
+     *
+     * @return output dir
+     */
     @OutputDirectory
     public abstract DirectoryProperty getOutputDir();
 
@@ -55,6 +69,9 @@ public abstract class ProcessTemplatesTask extends DefaultTask {
         throw new IllegalArgumentException("不支持的模板引擎");
     }
 
+    /**
+     * process template action
+     */
     @TaskAction
     public void processTemplate() {
         System.out.println("SourceFiles: " + getSourceFiles());
@@ -71,6 +88,10 @@ public abstract class ProcessTemplatesTask extends DefaultTask {
         System.out.println("\nEnd\n");
     }
 
+    /**
+     * set template data
+     * @param data template
+     */
     public abstract void setTemplateData(TemplateData data);
 
 }

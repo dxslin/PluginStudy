@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * author: slin
+ * @author slin
  * <p>
  * date: 2021/12/6
  * <p>
@@ -22,6 +22,10 @@ public class ReplaceTemplateEngine implements TemplateEngine {
 
     private Map<String, String> variablesMap;
 
+    /**
+     *
+     * @param variablesMap variables
+     */
     public ReplaceTemplateEngine(Map<String, String> variablesMap){
         this.variablesMap = variablesMap;
     }

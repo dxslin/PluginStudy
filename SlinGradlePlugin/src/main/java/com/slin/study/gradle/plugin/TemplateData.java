@@ -13,9 +13,17 @@ import org.gradle.api.tasks.Input;
  */
 public abstract class TemplateData {
 
+    /**
+     * get name
+     * @return name
+     */
     @Input
     public abstract Property<String> getName();
 
+    /**
+     * get variables
+     * @return variables
+     */
     @Input
     public abstract MapProperty<String, String> getVariables();
 

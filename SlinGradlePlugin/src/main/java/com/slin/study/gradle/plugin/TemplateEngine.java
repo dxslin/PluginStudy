@@ -11,6 +11,11 @@ import java.io.File;
  */
 public interface TemplateEngine {
 
+    /**
+     * process file
+     * @param input input
+     * @param output output
+     */
     void process(File input, File output);
 
 }
