@@ -63,7 +63,7 @@ publishing {
             artifactId project.name   //资源名称
             version project.version     //版本名称
             pom {
-                name = "SlinGradlePlugin"
+                name = project.name
                 description = "Gradle plugin test by slin"
                 url = "https://github.com/dxslin/PluginStudy"
                 licenses {

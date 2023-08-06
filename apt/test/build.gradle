@@ -2,6 +2,13 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+
+    // maven发布插件，用于将插件打包发布上传到仓库
+    id 'maven-publish'
+    id 'signing'
+    id("org.jetbrains.dokka") version "$kotlin_version"
+
+
 }
 
 android {
@@ -34,6 +41,8 @@ dependencies {
     implementation project(path: ':apt:annotation')
     kapt project(path: ':apt:processor')
 
+//    dokkaPlugin "org.jetbrains.dokka:android-documentation-plugin:$kotlin_version"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
@@ -41,3 +50,96 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+
+Properties localProp = new Properties()
+localProp.load(rootProject.file("local.properties").newDataInputStream())
+localProp.entrySet().forEach {
+    println "local: ${it.key}: ${it.value}"
+    project.ext[it.key] = it.value
+}
+
+Boolean isSnapshot = true
+group = "io.github.dxslin"
+// 版本
+version = "1.0.0${isSnapshot ? "-SNAPSHOT" : ""}"
+
+tasks.register("sourceJar", org.gradle.jvm.tasks.Jar) {
+//    from android.sourceSets.main.java.sourceFiles
+    from android.sourceSets.main.java.srcDirs
+    from android.sourceSets.main.kotlin.srcDirs
+    archiveClassifier = "source"
+}
+
+tasks.register("androidJavadocsJar", org.gradle.jvm.tasks.Jar) {
+    dependsOn("dokkaHtml")
+    from dokkaHtml.outputs.files
+    archiveClassifier = "javadoc"
+}
+
+
+// 上传仓库配置
+// https://developer.android.google.cn/studio/build/maven-publish-plugin?hl=zh-cn
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                def isLocal = true
+                def maven2Url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                def localUrl = "${rootDir.path}/plugin_release"
+
+                url isLocal ? localUrl : (isSnapshot ? snapshotUrl : maven2Url)
+                if (!isLocal) {
+                    credentials {
+                        username project["ossrh.username"]
+                        password project["ossrh.password"]
+                    }
+                }
+            }
+        }
+        publications {
+            aptTest(MavenPublication) {
+                from components.release
+
+                artifact sourceJar
+                artifact androidJavadocsJar
+
+                groupId project.group //
+                artifactId "aptTest"  //资源名称
+                version project.version     //版本名称
+                pom {
+                    name = "aptTest"
+                    description = "Gradle plugin test by slin"
+                    url = "https://github.com/dxslin/PluginStudy"
+                    licenses {
+                        license {
+                            name = "The Apache License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = "dxslin"
+                            name = "Slin Tan"
+                            email = "dxslin@qq.com"
+                        }
+                    }
+                    scm {
+                        url = "https://github.com/dxslin/PluginStudy/tree/master"
+                        connection = "scm:git:git://github.com/dxslin/PluginStudy.git"
+                        developerConnection = "scm:git:ssh://github.com:dxslin/PluginStudy.git"
+                    }
+                }
+            }
+        }
+    }
+
+    signing {
+        // 使用gpg软件？默认在gradle.properties文件里面配置sign信息即可，这里我们配置在local.properties里面， 然后复制到project.ext中
+//    useGpgCmd()
+        sign publishing.publications.aptTest
+    }
+
+}
+
